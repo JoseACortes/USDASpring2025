@@ -1,0 +1,9 @@
+For Korz
+o - New deconvolution method
+    o - set up calibration for 2 elements
+    o - test for 5 combinations of 2 elements
+    o - compare to peak fitting version
+
+For Prez
+o - Full Scale Comparison Core vs MINS
+    o - Sample Soil Defenition
