@@ -1,0 +1,1 @@
+sbatch commands/0_1.sh

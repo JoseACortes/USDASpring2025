@@ -264,7 +264,7 @@ def sample_section(f, midpoints, padding, n):
     elems = np.mean(elems, axis=1)
     return elems
 # %%
-def make_mcnp(f, extent, res, elem_labels, x_fix = 0, y_fix = 0, z_fix=0, mw='w', surface_header='', surface_footer='', mat_header='', mat_footer='', cell_header='', cell_footer='', subsection_n=50):
+def make_mcnp(f, extent, res, elem_labels, density = -2.156, x_fix = 0, y_fix = 0, z_fix=0, z_mul = 1, mw='w', surface_header='', surface_footer='', mat_header='', mat_footer='', cell_header='', cell_footer='', subsection_n=50):
     """
     Generates MCNP input file components for a given geometry and material distribution.
     Parameters:
@@ -311,7 +311,9 @@ def make_mcnp(f, extent, res, elem_labels, x_fix = 0, y_fix = 0, z_fix=0, mw='w'
     for i, z in enumerate(zs):
         surface_id = f'{surface_header}3{force_n_digits(i, n)}{surface_footer}'
         z_ids.append(surface_id)
-        surfaces += (f'{int(surface_id)} pz {z-z_fix}\n')
+        surfaces += (f'{int(surface_id)} pz {z_mul*(z)-z_fix}\n')
+
+    walls = (x_ids[0], x_ids[-1], y_ids[0], y_ids[-1], z_ids[0], z_ids[-1])
 
     XX, midpoints = get_midpoints(
         sides=(xs, ys, zs), res=res, extent=extent
@@ -339,18 +341,20 @@ def make_mcnp(f, extent, res, elem_labels, x_fix = 0, y_fix = 0, z_fix=0, mw='w'
         elem_ids.append(elem_id)
         mats += f'm{elem_id} '
         for id, e in zip(elem_labels, elem):
-            mats += f'{id} {e*mw} '
+            if e == 0.0:
+                continue
+            else:
+                mats += f'{id} {e*mw} '
         mats += '\n'
 
     cells = ''
-    density = -1.05
     cell_ids = []
     for i, e in enumerate(elem_ids):
         cell_id = f'{cell_header}{force_n_digits(i, nn)}{cell_footer}'
         cell_ids.append(cell_id)
-        cells += f'{cell_id} {e} {density} {xx_index[i]} -{xxl_index[i]} {yy_index[i]} -{yyl_index[i]} {zz_index[i]} -{zzl_index[i]} imp:n,p 1\n'
+        cells += f'{cell_id} {e} {density} {xx_index[i]} -{xxl_index[i]} {yy_index[i]} -{yyl_index[i]} {z_mul*int(zz_index[i])} {z_mul*-int(zzl_index[i])} imp:n,p 1\n'
         
-    return cells, cell_ids, surfaces, mats
+    return cells, walls, surfaces, mats
 
 
 
