@@ -42,3 +42,15 @@ gebless_spectrums = np.array(gebless_spectrums)
 bins = np.array(bins)
 
 np.savez(out_data_folder+'gebless_spectrums.npz', x=bins, y=gebless_spectrums)
+
+# for tally 4, "fluxinsoil"
+soil_fluxes = []
+for filename in tqdm(filenames):
+    bins, vals = insd.read(filename, tally=4, start_time_bin=0, end_time_bin=3, nps=1)
+    
+    soil_fluxes.append(np.array(vals))
+
+soil_fluxes = np.array(soil_fluxes)
+bins = np.array(bins)
+
+np.savez(out_data_folder+'soil_fluxes.npz', x=bins, y=soil_fluxes)

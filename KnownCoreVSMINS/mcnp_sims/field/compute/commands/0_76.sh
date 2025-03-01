@@ -43,7 +43,7 @@ echo 'Starting' $line
 start_time=$(date +%s)
 
 if [ $atlas = true ]; then 
-    module load apptainer 
+    module load apptainer/1.3.3
     if [ $continue = false ]; then
         apptainer exec --pem-path=/home/jose.cortes/.ssh/mkey-pub.pem /apps/licensed/mcnp/mcnp-encrypted.sif mcnp6 r i=$input_file o=$outp mctal=$mctal ru=$runtpe notek tasks $n_tasks
     else

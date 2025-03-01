@@ -181,5 +181,8 @@ fc18 *********Unbroadened Pulse Height Tally Sum of Detectors 1,2 & 3 **********
 e18 0 1e-5 932i 8.4295
 F18:p (101)
 c ***********************************
+fc4 **Flux in Soil Surface**
+*f4:p (20)
+e4 0 1e-5 932i 8.4295
 c mplot tal 78 freq 10000
 nps 1e9
