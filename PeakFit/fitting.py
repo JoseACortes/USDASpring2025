@@ -8,9 +8,19 @@ from scipy.optimize import curve_fit
 output_folder = "data/output_data/"
 
 # %%
+# c window and si window are used in fitting, low window is used in plotting
+c_window = [460, 530] 
+si_window = [175, 220]
+low_window = [0, 100]
+# default peak max height values, auto_peak_max will set the max height to the max value in the window
+c_peak_max = 5
+si_peak_max = 5
+auto_peak_max = True
+
+# %%
 # to read xlsx in "data/input_data/Combined Detectors dens_0_6.xlsx"
 data_folder = "data/input_data/"
-file_name = "Combined Detectors dens_0_6"
+file_name = "Combined Detectors_dens_2_0"
 df = pd.read_excel(data_folder + file_name+'.xlsx')
 df = df[7:]
 df = df[df.columns[3:]]
@@ -24,6 +34,7 @@ cols = cols[-1:] + cols[:-1]
 df = df[cols]
 
 # %%
+# this is to be able to input a list of values for the spectrum
 # df = pd.DataFrame()
 # spec = []
 # bins = np.arange(0, len(spec), 1)
@@ -33,11 +44,7 @@ df = df[cols]
 # bins = np.arange(0, len(df), 1)
 # df["bin"] = bins
 
-# %%
-# c window and si window are used in fitting, low window is used in plotting
-c_window = [460, 530] 
-si_window = [175, 220]
-low_window = [0, 100]
+
 
 # %%
 def plott(df, suptitle):
@@ -142,6 +149,14 @@ def exp_falloff(x,x0,a,p,b):
     return (a*np.exp(-p*(x-x0)))+b
 
 # %%
+# auto peak max
+if auto_peak_max:
+    c_df_window = df[df.columns[1:]].values[c_window[0]:c_window[1]]
+    si_df_window = df[df.columns[1:]].values[si_window[0]:si_window[1]]
+    c_peak_max = np.max(df[df.columns[1:]].values)- np.min(df[df.columns[1:]].values)
+    si_peak_max = np.max(df[df.columns[1:]].values) - np.min(df[df.columns[1:]].values)
+
+# %%
 # the following functions are used in curve_fit, 
 # the baseline can be any function as long as the bounds and initial params are the correct size, 
 # to switch the peak function, also change the area under peak function
@@ -151,10 +166,16 @@ si_baseline_p0 = [0, 0] # a, b
 si_basline_lower = [-np.inf, -np.inf]
 si_basline_upper = [np.inf, np.inf]
 
+# with exp_falloff
+# si_baseline = lambda x, a, b, c, d: exp_falloff(x, a, b, c, d)
+# si_baseline_p0 = [0, 0, 0, 0] # a, b, c, d
+# si_basline_lower = [-np.inf, -np.inf, -np.inf, -np.inf]
+# si_basline_upper = [np.inf, np.inf, np.inf, np.inf]
+
 si_peak = lambda x, a, b, c: gaussianfunc(x, a, b, c)
-si_peak_p0 = [1, (si_window[1]+si_window[0])/2, 50]
-si_peak_lower = [0, si_window[0], 0]
-si_peak_upper = [np.inf, si_window[1], np.inf]
+si_peak_p0 = [si_peak_max/2, (si_window[1]+si_window[0])/2, 5]
+si_peak_lower = [0, si_window[0], 1]
+si_peak_upper = [si_peak_max, si_window[1], 50]
 
 c_baseline = lambda x, a, b: linearfunc(x, a, b)
 c_baseline_p0 = [0, 0]
@@ -162,33 +183,46 @@ c_basline_lower = [-np.inf, -np.inf]
 c_basline_upper = [np.inf, np.inf]
 
 c_peak = lambda x, a, b, c: gaussianfunc(x, a, b, c)
-c_peak_p0 = [1, (c_window[1]+c_window[0])/2, 50]
-c_peak_lower = [0, c_window[0], 0]
-c_peak_upper = [np.inf, c_window[1], np.inf]
+c_peak_p0 = [c_peak_max, (c_window[1]+c_window[0])/2, 2] # staring params
+c_peak_lower = [0, c_window[0], 1]
+c_peak_upper = [c_peak_max, c_window[1], 50]
+
+# Double Peak
+# c_peak = lambda x, a, b, c, d, e, f: gaussianfunc(x, a, b, c) + gaussianfunc(x, d, e, f)
+# c_peak_p0 = [c_peak_max, (c_window[1]+c_window[0])/2, 2]*2 # staring params
+# c_peak_lower = [0, c_window[0], 1]*2
+# c_peak_upper = [c_peak_max*2, c_window[1], 5]*2
+
+
 
 
 # %%
-def total_c(x, a, b, c, d, e):
-    return c_baseline(x, a, b) + c_peak(x, c, d, e)
-
 c_p0 = c_baseline_p0 + c_peak_p0
 c_lower = c_basline_lower + c_peak_lower
 c_upper = c_basline_upper + c_peak_upper
 c_bounds = (c_lower, c_upper)
-
-def total_si(x, a, b, c, d, e):
-    return si_baseline(x, a, b) + si_peak(x, c, d, e)
 
 si_p0 = si_baseline_p0 + si_peak_p0
 si_lower = si_basline_lower + si_peak_lower
 si_upper = si_basline_upper + si_peak_upper
 si_bounds = (si_lower, si_upper)
 
+def total_c(x, *params):
+    return c_baseline(x, *params[:len(c_baseline_p0)]) + c_peak(x, *params[len(c_baseline_p0):])
+
+def total_si(x, *params):
+    return si_baseline(x, *params[:len(si_baseline_p0)]) + si_peak(x, *params[len(si_baseline_p0):])
+
+
 
 
 # %%
 def area_under_gaussian_peak(a, b, c):
     area = a * c * np.sqrt(np.pi)
+    return area
+
+def generic_area_under_peak(peak_func, x, *params):
+    area = np.trapezoid(peak_func(x, *params), x)
     return area
 
 # %%
@@ -219,7 +253,8 @@ for col in df.columns[1:]:
     c_mesgs.append(mesg)
     c_iers.append(ier)
 
-    c_peak_area = area_under_gaussian_peak(*popt[len(c_baseline_p0):]) # will need to change this if the peak function changes
+    # c_peak_area = area_under_gaussian_peak(*popt[len(c_baseline_p0):]) # will need to change this if the peak function changes
+    c_peak_area = generic_area_under_peak(c_peak, x_fit, *popt[len(c_baseline_p0):])
     c_peak_areas.append(c_peak_area)
 
     c_peak_fitting_err = (y_fit - total_c(x_fit, *popt)).std()
@@ -253,7 +288,8 @@ for col in df.columns[1:]:
     si_mesgs.append(mesg)
     si_iers.append(ier)
 
-    si_peak_area = area_under_gaussian_peak(*popt[len(si_baseline_p0):]) # will need to change this if the peak function changes
+    # si_peak_area = area_under_gaussian_peak(*popt[len(si_baseline_p0):]) # will need to change this if the peak function changes
+    si_peak_area = generic_area_under_peak(si_peak, x_fit, *popt[len(si_baseline_p0):])
     si_peak_areas.append(si_peak_area)
 
     si_peak_fitting_err = (y_fit - total_si(x_fit, *popt)).std()
@@ -310,7 +346,7 @@ for i, col in enumerate(df.columns[1:]):
     fit = total_c(x, *c_popts[i])[c_window[0]:c_window[1]]
     c_mins.append(np.min(fit))
     c_maxs.append(np.max(fit))
-    baseline_fit = c_baseline(x, *c_popts[i][:2])[c_window[0]:c_window[1]]
+    baseline_fit = c_baseline(x, *c_popts[i][:len(c_baseline_p0)])[c_window[0]:c_window[1]]
     axs[i, 0].plot(x[c_window[0]:c_window[1]], baseline_fit, label=str(col)+'_baseline', linestyle='--')
     axs[i, 0].plot(x[c_window[0]:c_window[1]], fit, label=str(col)+'_fit', linestyle='--')
     axs[i, 0].set_title('Fitted Carbon Window')
@@ -328,7 +364,7 @@ for i, col in enumerate(df.columns[1:]):
     fit = total_si(x, *si_popts[i])[si_window[0]:si_window[1]]
     si_mins.append(np.min(fit))
     si_maxs.append(np.max(fit))
-    baseline_fit = si_baseline(x, *si_popts[i][:2])[si_window[0]:si_window[1]]
+    baseline_fit = si_baseline(x, *si_popts[i][:len(si_baseline_p0)])[si_window[0]:si_window[1]]
     axs[i, 1].plot(x[si_window[0]:si_window[1]], baseline_fit, label=str(col)+'_baseline', linestyle='--')
     axs[i, 1].plot(x[si_window[0]:si_window[1]], fit, label=str(col)+'_fit', linestyle='--')
     axs[i, 1].set_title('Fitted Silicone Window')
