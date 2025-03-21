@@ -1,0 +1,414 @@
+
+Running 0_1
+
+
+Tue Feb 25 04:55:57 PM CST 2025
+rm: cannot remove 'output/outp/0_1.outp': No such file or directory
+rm: cannot remove 'output/mctal/0_1.mctal': No such file or directory
+rm: cannot remove 'output/runtpe/0_1.runtpe': No such file or directory
+Starting 0_1
+ mcnp     ver=6    , ld=02/20/18  02/25/25 16:55:57                   
+          Code Name & Version = MCNP_6.20, 6.2.0
+          Copyright LANS/LANL/DOE - see output file
+  
+     _/      _/        _/_/_/       _/      _/       _/_/_/         _/_/_/ 
+    _/_/  _/_/      _/             _/_/    _/       _/    _/     _/        
+   _/  _/  _/      _/             _/  _/  _/       _/_/_/       _/_/_/     
+  _/      _/      _/             _/    _/_/       _/           _/    _/    
+ _/      _/        _/_/_/       _/      _/       _/             _/_/       
+  
+  comment.  Physics models disabled.
+ mode n p                                                             
+  comment.  photonuclear physics may be needed (phys:p).
+ cut:n 1j 0.1                                                         
+  warning.  neutron energy cutoff >0 in this neutron-photon problem.
+ 
+  warning.  f8 tally unreliable since neutron transport nonanalog.
+  warning.  f8 tally unreliable since neutron transport nonanalog.
+ comment. using random number generator  1, initial seed = 8674536546524321    
+  comment.  total nubar used if fissionable isotopes are present.
+  comment.         101 surfaces were deleted for being the same as others.
+  warning.    6000.  c and   6000.50c are both called for.
+  warning.   14000.  c and  14000.60c are both called for.
+  warning.   26000.  c and  26000.50c are both called for.
+  comment.  threading will be used when possible in portions of mcnp6.
+  comment.  threading will be used for n/p/e table physics.
+  comment.  threading will generally not be used for model physics.
+  comment.  unresolved resonances with variance reduction with f8 tally.
+  warning.  Force analog capture for pulse height tallies
+  warning.  Pulse-height tally variance reduction forced off. F8 tallies not reliable.
+ imcn   is done
+
+  warning.   35079.80c lacks gamma-ray production cross sections.
+  warning.   35081.80c lacks gamma-ray production cross sections.
+  warning.   57139.80c lacks gamma-ray production cross sections.
+  warning.   58140.80c lacks gamma-ray production cross sections.
+  warning.  material        4 has been set to a conductor.
+  warning.  material        5 has been set to a conductor.
+  warning.  material        6 has been set to a conductor.
+  warning.  material        7 has been set to a conductor.
+  comment.  setting up hash-based fast table search for xsec tables
+
+ ctm =        0.00   nrn =                 0
+ dump    1 on file output/runtpe/0_1.runtpe   nps =           0   coll =                0
+ xact   is done
+
+ cp0 =   0.51
+  warning.  random number period exceeded.  decrease stride.
+ additional error messages on file output/outp/0_1.outp
+
+ ctm =     1500.17   nrn =      190254362787
+ dump    2 on file output/runtpe/0_1.runtpe   nps =   528865910   coll =      13150221205
+      run terminated when  1000000000  particle histories were done.
+
+ =====>     527.01 M histories/hr    (based on wall-clock time in mcrun)
+
+
+
+ ctm =     2845.20   nrn =      359729786996
+ dump    3 on file output/runtpe/0_1.runtpe   nps =  1000000000   coll =      24864190307
+ tally data written to file output/mctal/0_1.mctal
+ mcrun  is done
+
+0_1 6855
+
+Running 1_0
+
+
+Tue Feb 25 06:50:12 PM CST 2025
+rm: cannot remove 'output/outp/1_0.outp': No such file or directory
+rm: cannot remove 'output/mctal/1_0.mctal': No such file or directory
+rm: cannot remove 'output/runtpe/1_0.runtpe': No such file or directory
+Starting 1_0
+ mcnp     ver=6    , ld=02/20/18  02/25/25 18:50:12                   
+          Code Name & Version = MCNP_6.20, 6.2.0
+          Copyright LANS/LANL/DOE - see output file
+  
+     _/      _/        _/_/_/       _/      _/       _/_/_/         _/_/_/ 
+    _/_/  _/_/      _/             _/_/    _/       _/    _/     _/        
+   _/  _/  _/      _/             _/  _/  _/       _/_/_/       _/_/_/     
+  _/      _/      _/             _/    _/_/       _/           _/    _/    
+ _/      _/        _/_/_/       _/      _/       _/             _/_/       
+  
+  comment.  Physics models disabled.
+ mode n p                                                             
+  comment.  photonuclear physics may be needed (phys:p).
+ cut:n 1j 0.1                                                         
+  warning.  neutron energy cutoff >0 in this neutron-photon problem.
+ m400010 6000 -0.0 7014 -0.0 14000 -1.0                               
+  warning.  the fraction for za = 6000 is zero.
+  warning.  the fraction for za = 7014 is zero.
+ 
+  warning.  duplicate isotope      0 within material    400010.
+  warning.  duplicate isotope      0 within material    400011.
+  warning.  duplicate isotope      0 within material    400012.
+  warning.  duplicate isotope      0 within material    400013.
+  warning.  duplicate isotope      0 within material    400014.
+  warning.  duplicate isotope      0 within material    400015.
+  warning.  duplicate isotope      0 within material    400016.
+  warning.  duplicate isotope      0 within material    400017.
+  warning.  duplicate isotope      0 within material    400018.
+  warning.  duplicate isotope      0 within material    400019.
+  warning.  duplicate isotope      0 within material    400020.
+  warning.  duplicate isotope      0 within material    400021.
+  warning.  duplicate isotope      0 within material    400022.
+  warning.  duplicate isotope      0 within material    400023.
+  warning.  duplicate isotope      0 within material    400024.
+  warning.  duplicate isotope      0 within material    400025.
+  warning.  duplicate isotope      0 within material    400026.
+ additional error messages on file output/outp/1_0.outp
+ m400060 6000 -0.0 7014 -0.0 14000 -1.0                               
+  fatal error.  no non-ZERO fractions.
+ comment. using random number generator  1, initial seed = 8674536546524321    
+ Expire parameter is atomic weight of      0 is zero.
+
+ bad trouble in subroutine rhoden of imcn                             
+
+ atomic weight of      0 is zero.
+rm: cannot remove 'output/runtpe/1_0.runtpe': No such file or directory
+1_0 1
+
+Running 3_0
+
+
+Tue Feb 25 06:50:13 PM CST 2025
+rm: cannot remove 'output/outp/3_0.outp': No such file or directory
+rm: cannot remove 'output/mctal/3_0.mctal': No such file or directory
+rm: cannot remove 'output/runtpe/3_0.runtpe': No such file or directory
+Starting 3_0
+ mcnp     ver=6    , ld=02/20/18  02/25/25 18:50:13                   
+          Code Name & Version = MCNP_6.20, 6.2.0
+          Copyright LANS/LANL/DOE - see output file
+  
+     _/      _/        _/_/_/       _/      _/       _/_/_/         _/_/_/ 
+    _/_/  _/_/      _/             _/_/    _/       _/    _/     _/        
+   _/  _/  _/      _/             _/  _/  _/       _/_/_/       _/_/_/     
+  _/      _/      _/             _/    _/_/       _/           _/    _/    
+ _/      _/        _/_/_/       _/      _/       _/             _/_/       
+  
+  comment.  Physics models disabled.
+ mode n p                                                             
+  comment.  photonuclear physics may be needed (phys:p).
+ cut:n 1j 0.1                                                         
+  warning.  neutron energy cutoff >0 in this neutron-photon problem.
+ m400000 6000 -0.0 7014 -0.0 14000 -1.0                               
+  warning.  the fraction for za = 6000 is zero.
+  warning.  the fraction for za = 7014 is zero.
+ 
+  warning.  duplicate isotope      0 within material    400000.
+ m400001 6000 -0.0 7014 -0.0 14000 -1.0                               
+  warning.  the fraction for za = 6000 is zero.
+  warning.  the fraction for za = 7014 is zero.
+  fatal error.  no non-ZERO fractions.
+ 
+  warning.  duplicate isotope      0 within material    400001.
+  warning.  duplicate isotope      0 within material    400001.
+  warning.  duplicate isotope      0 within material    400001.
+ m400002 6000 -0.0005086969332600262 7014 -0.0005086969332600262 14000
+  fatal error.  no non-ZERO fractions.
+ 
+  warning.  duplicate isotope      0 within material    400002.
+  warning.  duplicate isotope      0 within material    400002.
+  warning.  duplicate isotope      0 within material    400002.
+ m400003 6000 -0.0017036881460719968 7014 -0.0017036881460719968 14000
+  fatal error.  no non-ZERO fractions.
+ 
+  warning.  duplicate isotope      0 within material    400003.
+  warning.  duplicate isotope      0 within material    400003.
+  warning.  duplicate isotope      0 within material    400003.
+ m400004 6000 -0.0031389831278169377 7014 -0.0031389831278169377 14000
+  fatal error.  no non-ZERO fractions.
+ 
+  warning.  duplicate isotope      0 within material    400004.
+ additional error messages on file output/outp/3_0.outp
+ comment. using random number generator  1, initial seed = 8674536546524321    
+ Expire parameter is atomic weight of      0 is zero.
+
+ bad trouble in subroutine rhoden of imcn                             
+
+ atomic weight of      0 is zero.
+rm: cannot remove 'output/runtpe/3_0.runtpe': No such file or directory
+3_0 0
+
+Running 4_0
+
+
+Tue Feb 25 06:50:13 PM CST 2025
+rm: cannot remove 'output/outp/4_0.outp': No such file or directory
+rm: cannot remove 'output/mctal/4_0.mctal': No such file or directory
+rm: cannot remove 'output/runtpe/4_0.runtpe': No such file or directory
+Starting 4_0
+ mcnp     ver=6    , ld=02/20/18  02/25/25 18:50:13                   
+          Code Name & Version = MCNP_6.20, 6.2.0
+          Copyright LANS/LANL/DOE - see output file
+  
+     _/      _/        _/_/_/       _/      _/       _/_/_/         _/_/_/ 
+    _/_/  _/_/      _/             _/_/    _/       _/    _/     _/        
+   _/  _/  _/      _/             _/  _/  _/       _/_/_/       _/_/_/     
+  _/      _/      _/             _/    _/_/       _/           _/    _/    
+ _/      _/        _/_/_/       _/      _/       _/             _/_/       
+  
+  comment.  Physics models disabled.
+ mode n p                                                             
+  comment.  photonuclear physics may be needed (phys:p).
+ cut:n 1j 0.1                                                         
+  warning.  neutron energy cutoff >0 in this neutron-photon problem.
+ 
+  warning.  f8 tally unreliable since neutron transport nonanalog.
+  warning.  f8 tally unreliable since neutron transport nonanalog.
+ comment. using random number generator  1, initial seed = 8674536546524321    
+  comment.  total nubar used if fissionable isotopes are present.
+  comment.         101 surfaces were deleted for being the same as others.
+  warning.    6000.  c and   6000.50c are both called for.
+  warning.   14000.  c and  14000.60c are both called for.
+  warning.   26000.  c and  26000.50c are both called for.
+  comment.  threading will be used when possible in portions of mcnp6.
+  comment.  threading will be used for n/p/e table physics.
+  comment.  threading will generally not be used for model physics.
+  comment.  unresolved resonances with variance reduction with f8 tally.
+  warning.  Force analog capture for pulse height tallies
+  warning.  Pulse-height tally variance reduction forced off. F8 tallies not reliable.
+ imcn   is done
+
+  warning.   35079.80c lacks gamma-ray production cross sections.
+  warning.   35081.80c lacks gamma-ray production cross sections.
+  warning.   57139.80c lacks gamma-ray production cross sections.
+  warning.   58140.80c lacks gamma-ray production cross sections.
+  warning.  material        4 has been set to a conductor.
+  warning.  material        5 has been set to a conductor.
+  warning.  material        6 has been set to a conductor.
+  warning.  material        7 has been set to a conductor.
+  comment.  setting up hash-based fast table search for xsec tables
+
+ ctm =        0.00   nrn =                 0
+ dump    1 on file output/runtpe/4_0.runtpe   nps =           0   coll =                0
+ xact   is done
+
+ cp0 =   0.51
+  warning.  random number period exceeded.  decrease stride.
+ additional error messages on file output/outp/4_0.outp
+
+ ctm =     1500.94   nrn =      189767116944
+ dump    2 on file output/runtpe/4_0.runtpe   nps =   528094468   coll =      13118163116
+      run terminated when  1000000000  particle histories were done.
+
+ =====>     527.51 M histories/hr    (based on wall-clock time in mcrun)
+
+
+
+ ctm =     2842.46   nrn =      359329171010
+ dump    3 on file output/runtpe/4_0.runtpe   nps =  1000000000   coll =      24839569463
+ tally data written to file output/mctal/4_0.mctal
+ mcrun  is done
+
+4_0 6849
+
+Running 1_0
+
+
+Tue Feb 25 10:09:17 PM CST 2025
+rm: cannot remove 'output/mctal/1_0.mctal': No such file or directory
+rm: cannot remove 'output/runtpe/1_0.runtpe': No such file or directory
+Starting 1_0
+ mcnp     ver=6    , ld=02/20/18  02/25/25 22:09:17                   
+          Code Name & Version = MCNP_6.20, 6.2.0
+          Copyright LANS/LANL/DOE - see output file
+  
+     _/      _/        _/_/_/       _/      _/       _/_/_/         _/_/_/ 
+    _/_/  _/_/      _/             _/_/    _/       _/    _/     _/        
+   _/  _/  _/      _/             _/  _/  _/       _/_/_/       _/_/_/     
+  _/      _/      _/             _/    _/_/       _/           _/    _/    
+ _/      _/        _/_/_/       _/      _/       _/             _/_/       
+  
+  comment.  Physics models disabled.
+ mode n p                                                             
+  comment.  photonuclear physics may be needed (phys:p).
+ cut:n 1j 0.1                                                         
+  warning.  neutron energy cutoff >0 in this neutron-photon problem.
+ 
+  warning.  f8 tally unreliable since neutron transport nonanalog.
+  warning.  f8 tally unreliable since neutron transport nonanalog.
+ comment. using random number generator  1, initial seed = 8674536546524321    
+  comment.  total nubar used if fissionable isotopes are present.
+  comment.         101 surfaces were deleted for being the same as others.
+  warning.    6000.  c and   6000.50c are both called for.
+  warning.   14000.  c and  14000.60c are both called for.
+  warning.   26000.  c and  26000.50c are both called for.
+  comment.  threading will be used when possible in portions of mcnp6.
+  comment.  threading will be used for n/p/e table physics.
+  comment.  threading will generally not be used for model physics.
+  comment.  unresolved resonances with variance reduction with f8 tally.
+  warning.  Force analog capture for pulse height tallies
+  warning.  Pulse-height tally variance reduction forced off. F8 tallies not reliable.
+ imcn   is done
+
+  warning.   35079.80c lacks gamma-ray production cross sections.
+  warning.   35081.80c lacks gamma-ray production cross sections.
+  warning.   57139.80c lacks gamma-ray production cross sections.
+  warning.   58140.80c lacks gamma-ray production cross sections.
+  warning.  material   400010 has been set to a conductor.
+  warning.  material   400060 has been set to a conductor.
+  warning.  material   400080 has been set to a conductor.
+  warning.  material   400150 has been set to a conductor.
+  warning.  material   400170 has been set to a conductor.
+  warning.  material   400200 has been set to a conductor.
+  warning.  material   400230 has been set to a conductor.
+  warning.  material   400240 has been set to a conductor.
+ additional error messages on file output/outp/1_0.outp
+  comment.  setting up hash-based fast table search for xsec tables
+
+ ctm =        0.00   nrn =                 0
+ dump    1 on file output/runtpe/1_0.runtpe   nps =           0   coll =                0
+ xact   is done
+
+ cp0 =   0.51
+
+ ctm =     1500.02   nrn =      193325602410
+ dump    2 on file output/runtpe/1_0.runtpe   nps =   538328769   coll =      13369812323
+      run terminated when  1000000000  particle histories were done.
+
+ =====>     537.57 M histories/hr    (based on wall-clock time in mcrun)
+
+
+
+ ctm =     2789.32   nrn =      359113335502
+ dump    3 on file output/runtpe/1_0.runtpe   nps =  1000000000   coll =      24835165300
+ tally data written to file output/mctal/1_0.mctal
+ mcrun  is done
+
+1_0 6720
+
+Running 3_0
+
+
+Wed Feb 26 12:01:17 AM CST 2025
+rm: cannot remove 'output/mctal/3_0.mctal': No such file or directory
+rm: cannot remove 'output/runtpe/3_0.runtpe': No such file or directory
+Starting 3_0
+ mcnp     ver=6    , ld=02/20/18  02/26/25 00:01:17                   
+          Code Name & Version = MCNP_6.20, 6.2.0
+          Copyright LANS/LANL/DOE - see output file
+  
+     _/      _/        _/_/_/       _/      _/       _/_/_/         _/_/_/ 
+    _/_/  _/_/      _/             _/_/    _/       _/    _/     _/        
+   _/  _/  _/      _/             _/  _/  _/       _/_/_/       _/_/_/     
+  _/      _/      _/             _/    _/_/       _/           _/    _/    
+ _/      _/        _/_/_/       _/      _/       _/             _/_/       
+  
+  comment.  Physics models disabled.
+ mode n p                                                             
+  comment.  photonuclear physics may be needed (phys:p).
+ cut:n 1j 0.1                                                         
+  warning.  neutron energy cutoff >0 in this neutron-photon problem.
+ 
+  warning.  f8 tally unreliable since neutron transport nonanalog.
+  warning.  f8 tally unreliable since neutron transport nonanalog.
+ comment. using random number generator  1, initial seed = 8674536546524321    
+  comment.  total nubar used if fissionable isotopes are present.
+  comment.         101 surfaces were deleted for being the same as others.
+  warning.    6000.  c and   6000.50c are both called for.
+  warning.   14000.  c and  14000.60c are both called for.
+  warning.   26000.  c and  26000.50c are both called for.
+  comment.  threading will be used when possible in portions of mcnp6.
+  comment.  threading will be used for n/p/e table physics.
+  comment.  threading will generally not be used for model physics.
+  comment.  unresolved resonances with variance reduction with f8 tally.
+  warning.  Force analog capture for pulse height tallies
+  warning.  Pulse-height tally variance reduction forced off. F8 tallies not reliable.
+ imcn   is done
+
+  warning.   35079.80c lacks gamma-ray production cross sections.
+  warning.   35081.80c lacks gamma-ray production cross sections.
+  warning.   57139.80c lacks gamma-ray production cross sections.
+  warning.   58140.80c lacks gamma-ray production cross sections.
+  warning.  material   400000 has been set to a conductor.
+  warning.  material   400001 has been set to a conductor.
+  warning.  material   400010 has been set to a conductor.
+  warning.  material   400011 has been set to a conductor.
+  warning.  material   400020 has been set to a conductor.
+  warning.  material   400021 has been set to a conductor.
+  warning.  material   400030 has been set to a conductor.
+  warning.  material   400031 has been set to a conductor.
+ additional error messages on file output/outp/3_0.outp
+  comment.  setting up hash-based fast table search for xsec tables
+
+ ctm =        0.00   nrn =                 0
+ dump    1 on file output/runtpe/3_0.runtpe   nps =           0   coll =                0
+ xact   is done
+
+ cp0 =   0.50
+
+ ctm =     1500.07   nrn =      201762819686
+ dump    2 on file output/runtpe/3_0.runtpe   nps =   564020985   coll =      14009299201
+      run terminated when  1000000000  particle histories were done.
+
+ =====>     561.18 M histories/hr    (based on wall-clock time in mcrun)
+
+
+
+ ctm =     2671.95   nrn =      357710018498
+ dump    3 on file output/runtpe/3_0.runtpe   nps =  1000000000   coll =      24837374560
+ tally data written to file output/mctal/3_0.mctal
+ mcrun  is done
+
+3_0 6439
