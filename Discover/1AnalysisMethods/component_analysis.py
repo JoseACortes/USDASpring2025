@@ -71,6 +71,19 @@ training_y = np.array(true_c_concentrations)[train_index]
 testing_x = predicted_df['Carbon Portion'].iloc[test_index]
 testing_y = np.array(true_c_concentrations)[test_index]
 
+# %% Fitting Components
+pt.single_component_fit(
+    df,
+    df[df.columns[train_mask]],
+    fitting_df,
+    bins,
+    column=8,
+    suptitle='Component Fitting',
+    output_folder='output/',
+    window=[4.2, 4.7],
+    filetype='png'
+)
+
 result = linregress(training_x, training_y)
 
 analyze = lambda x: result.slope * x + result.intercept

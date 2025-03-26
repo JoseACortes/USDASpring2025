@@ -39,13 +39,23 @@ df = pd.DataFrame(spectrums.T, columns=headers)
 
 
 # In[2]: Plotting
-pt.general_plotter(
+# pt.general_plotter(
+#     df, 
+#     bins=bins, 
+#     suptitle='Carbon and Silicon Concentrations', 
+#     c_window=[4.2, 4.7], 
+#     si_window=[1.6, 1.95], 
+#     low_window=[0, 0.5], 
+#     output_folder='output/'
+#     )
+
+pt.single_spectrum(
     df, 
-    bins=bins, 
-    suptitle='Carbon and Silicon Concentrations', 
+    bins=bins,
+    column=8, 
+    suptitle='Example Spectrum', 
     c_window=[4.2, 4.7], 
-    si_window=[1.6, 1.95], 
-    low_window=[0, 0.5], 
+    si_window=[1.6, 1.95],
     output_folder='output/'
     )
 
@@ -84,13 +94,22 @@ mae_test = np.mean(np.abs(testing_y - analyze(testing_x)))
 
 # %% Plotting Peak Fitting Results
 
-pt.plot_reg_results(
-    x_hat,
+# pt.plot_reg_results(
+#     x_hat,
+#     true_c_concentrations,
+#     element='Carbon',
+#     training_mask=train_mask,
+#     suptitle='Peak Fitting Results', 
+#     output_folder='output/'
+#     )
+
+pt.plot_fitting_results(
+    fitting_df,
     true_c_concentrations,
-    element='Carbon',
-    training_mask=train_mask,
-    suptitle='Peak Fitting Results', 
-    output_folder='output/'
+    column=8,
+    suptitle='Fitting Results', 
+    output_folder='output/',
+    filetype='png'
     )
 
 # pt.plot_fitting_results(
@@ -100,22 +119,19 @@ pt.plot_reg_results(
 #     output_folder='output/'
 #     )
 
-# pt.plot_fitting_results(
-#     fitting_df,
-#     true_c_concentrations,
-#     suptitle='Fitting Results', 
-#     output_folder='output/'
-#     )
-
-
+# print(c_lines_df.head())
 # # In[3]: Plotting Fitting Results
-# pt.carbon_plotter(
-#     c_lines_df[c_lines_df.columns[1:]], 
-#     bins=c_lines_df['bins'], 
-#     suptitle='Carbon Fits', 
-#     c_window=[4.2, 4.7], 
-#     output_folder='output/'
-#     )
+pt.single_carbon_fit_plotter(
+    c_lines_df[c_lines_df.columns[1:]], 
+    column=8,
+    bins=c_lines_df['bins'], 
+    suptitle='Carbon Fit Example', 
+    c_window=[4.2, 4.7], 
+    output_folder='output/',
+    filetype='png'
+    )
+
+
 
 # pt.silicone_plotter(
 #     si_lines_df[si_lines_df.columns[1:]], 

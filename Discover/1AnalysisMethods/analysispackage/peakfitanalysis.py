@@ -10,6 +10,9 @@ def linearfunc(x, a, b):
 def gaussianfunc(x, a, b, c):
     return a * np.exp(-((x - b) / c) ** 2)
 
+def double_gaussian(x, a1, b1, c1, a2, b2, c2):
+    return gaussianfunc(x, a1, b1, c1) + gaussianfunc(x, a2, b2, c2)
+
 def geb(x, a, b, c):
     return (a+b*np.sqrt(x+c*(x*x)))*0.60056120439322
 
@@ -19,6 +22,7 @@ def exp_falloff(x,x0,a,p,b):
 functions = {
     'linear': linearfunc,
     'gauss': gaussianfunc,
+    'double_gauss': double_gaussian,
     'exp_falloff': exp_falloff
 }
 
@@ -30,6 +34,8 @@ def generate_initial_guess(df, bins, f, p0='auto'):
             p0 = [0, df.min().min()]
         elif f == gaussianfunc:
             p0 = [gaus_fix_term*(df.max().max()-df.min().min()), np.mean(bins), (bins[-1]-bins[0])/6]
+        elif f == double_gaussian:
+            p0 = [gaus_fix_term*(df.max().max()-df.min().min())/2, np.mean(bins), (bins[-1]-bins[0])/6, gaus_fix_term*(df.max().max()-df.min().min())/2, np.mean(bins), (bins[-1]-bins[0])/ 6]
         elif f == exp_falloff:
             p0 = [np.min(bins), gaus_fix_term*(df.max().max()-df.min().min()), 1, df.min().min()]
     return p0
@@ -40,6 +46,8 @@ def generate_bounds(df, bins, f, bounds='auto'):
             bounds = ([-np.inf, 0], [0, np.inf])
         elif f == gaussianfunc:
             bounds = ([0, np.min(bins), (bins[-1]-bins[0])/100], [(df.max().max()-df.min().min()), np.max(bins), (bins[-1]-bins[0])/2])
+        elif f == double_gaussian:
+            bounds = ([0, np.min(bins), (bins[-1]-bins[0])/100, 0, np.min(bins), (bins[-1]-bins[0])/100], [(df.max().max()-df.min().min()), np.max(bins), (bins[-1]-bins[0])/2, (df.max().max()-df.min().min()), np.max(bins), (bins[-1]-bins[0])/2])
         elif f == exp_falloff:
             bounds = ([-np.inf]*4, [np.inf]*4)
     return bounds
@@ -158,7 +166,7 @@ def PeakFit(
             p0=p0,
             bounds=c_bounds,
             full_output=True,
-            maxfev=10000
+            maxfev=100000
         )
         c_popts.append(popt)
         c_pcovs.append(pcov)
