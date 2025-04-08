@@ -55,9 +55,6 @@ mses = []
 r2s = []
 predicted_concentrations = []
 
-# Tests: single peak, double peak, single peak with exponential background, double peak with exponential background, component analysis
-
-
 train_index = [0, 15]
 test_index = [1, 2, 4, 5,3, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 
@@ -154,7 +151,7 @@ fitting_df, predicted_df = ca.Analyze(
     df,
     train_mask=train_mask,
     true_c_concentrations=true_c_concentrations,
-    normalize=True,
+    normalize=False,
 )
 
 training_x = predicted_df['Carbon Portion'].iloc[train_index]
