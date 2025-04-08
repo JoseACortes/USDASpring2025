@@ -147,7 +147,7 @@ def single_carbon_fit_plotter(df, column=None, bins=None, c_window=None, suptitl
     fig.suptitle(suptitle, fontsize=16, fontweight='bold', y=.98)
 
     axs = fig.add_subplot(111)
-    axs.set_title('MINS Readings')
+    axs.set_title('Analysis Readings')
     
     axs.plot(c_bins, c_spec[c_spec.columns[2]], label=c_spec.columns[2], color='black')
     axs.plot(c_bins, c_spec[c_spec.columns[0]], label=c_spec.columns[0], color='blue')
@@ -158,7 +158,7 @@ def single_carbon_fit_plotter(df, column=None, bins=None, c_window=None, suptitl
     # axs.set_yscale('log')
     axs.set_xlabel('Energy (MeV)')
     axs.set_ylabel('Counts')
-    axs.grid()
+    # axs.grid()
     plt.legend()
     
     plt.savefig(f"{output_folder+suptitle}."+filetype)
@@ -166,7 +166,7 @@ def single_carbon_fit_plotter(df, column=None, bins=None, c_window=None, suptitl
 
 def silicone_plotter(df, bins=None, suptitle=None, c_window=None, si_window=None, low_window=None, output_folder=None, filetype='jpg'):
         fig, axs = plt.subplots(1, 1, figsize=(15, 10), frameon=False)
-        fig.suptitle(suptitle)
+        fig.suptitle(suptitle, fontsize=16, fontweight='bold', y=.98)
         si_maxs = []
         si_mins = []
         for col in df.columns:
@@ -213,12 +213,12 @@ def single_silicone_plotter(df, column=None, bins=None, si_window=None, suptitle
     plt.legend()
     
     plt.savefig(f"{output_folder+suptitle}."+filetype)
-    plt.grid()
+    # plt.grid()
     plt.close(fig)
 
 def fits_plotter(df, c_df, si_df, c_bins, si_bins, suptitle=None, output_folder=None):
         fig, axs = plt.subplots(len(df.columns), 2, figsize=(15, 10*len(df.columns)))
-        fig.suptitle(suptitle)
+        fig.suptitle(suptitle, fontsize=16, fontweight='bold', y=.98)
         
         for i, col in enumerate(df.columns):
             true_spec = c_df[col+" true"]
@@ -251,7 +251,7 @@ def fits_plotter(df, c_df, si_df, c_bins, si_bins, suptitle=None, output_folder=
 def plot_fitting_results(fitting_df, true_peak_area, column = None, element='Carbon', suptitle=None, output_folder=None, filetype='jpg'):
     
     fig, axs = plt.subplots(1, 1, figsize=(5.45, 5.59), frameon=False)
-    fig.suptitle(suptitle)
+    fig.suptitle(suptitle, fontsize=16, fontweight='bold', y=.98)
     axs.scatter(true_peak_area, fitting_df[element+ ' Peak Area'], label='Fitted Peak Area', marker='o', color='red')
     if column is not None:
         axs.plot(true_peak_area[column], fitting_df[element+ ' Peak Area'][column], marker='x', color='red')
@@ -266,17 +266,17 @@ def plot_fitting_results(fitting_df, true_peak_area, column = None, element='Car
     plt.savefig(f"{output_folder+suptitle}."+filetype)
     plt.close(fig)
 
-def plot_reg_results(x_hat, true_peak_area, element='Carbon', training_mask = None, suptitle=None, output_folder=None):
-    fig, axs = plt.subplots(1, 1, figsize=(15, 10))
-    fig.suptitle(suptitle)
+def plot_reg_results(x_hat, true_peak_area, element='Carbon', training_mask = None, suptitle=None, output_folder=None, filetype='png'):
+    fig, axs = plt.subplots(1, 1, figsize=(5.45, 5.59), frameon=False)
+    fig.suptitle(suptitle, fontsize=16, fontweight='bold', y=.98)
     true_peak_area = np.array(true_peak_area)
     x_hat = np.array(x_hat)
     x_min = np.min([true_peak_area, x_hat], axis=-1)
     x_max = np.max([true_peak_area, x_hat], axis=-1)
     axs.plot([x_min, x_max], [x_min, x_max], color='black', linestyle='-.', alpha=0.1) 
     if training_mask is not None:
-        axs.scatter(true_peak_area[training_mask], x_hat[training_mask], label='Training Data', marker='o')
-        axs.scatter(true_peak_area[~training_mask], x_hat[~training_mask], label='Testing Data', marker='o')
+        axs.scatter(true_peak_area[training_mask], x_hat[training_mask], label='Training Data', marker='*', color='blue', s=100)
+        axs.scatter(true_peak_area[~training_mask], x_hat[~training_mask], label='Testing Data', marker='o', color='red')
     else:
         axs.scatter(true_peak_area, x_hat, label='All Data', marker='o')
     
@@ -288,7 +288,8 @@ def plot_reg_results(x_hat, true_peak_area, element='Carbon', training_mask = No
     # square
     axs.set_aspect('equal', adjustable='box')
     # plt.show()
-    plt.savefig(f"{output_folder+suptitle}.jpg")
+    plt.grid()
+    plt.savefig(f"{output_folder+suptitle}."+filetype)
     plt.close(fig)
 
 def single_spectrum(df, column=None, bins=None, c_window=None, si_window=None, suptitle=None, output_folder=None, large_window=[.1, np.inf]):
@@ -383,6 +384,159 @@ def single_spectrum(df, column=None, bins=None, c_window=None, si_window=None, s
     plt.savefig(f"{output_folder+suptitle}.png")
     plt.close(fig)
 
+
+def multi_spectrum(df, columns=None, bins=None, colors=None, c_window=None, si_window=None, suptitle=None, output_folder=None, large_window=[.1, np.inf], filetype='png', filename=None):
+    """
+    Generates a multi-panel spectrum plot with zoomed-in views of specific regions 
+    and saves the resulting figure as a PNG file.
+    Parameters:
+        df (pd.DataFrame): The input data containing spectrum information.
+        columns (list, optional): List of column names to be used from the DataFrame. 
+                                  Defaults to all columns in the DataFrame.
+        bins (np.ndarray): Array of bin edges corresponding to the spectrum data.
+        c_window (list): Range of energy values for the Carbon peak [min, max].
+        si_window (list): Range of energy values for the Silicone peak [min, max].
+        suptitle (str): Title for the entire figure.
+        output_folder (str): Path to the folder where the output PNG file will be saved.
+        large_window (list, optional): Range of energy values for the full spectrum 
+                                       [min, max]. Defaults to [.1, np.inf].
+    Returns:
+        None
+    Notes:
+        - The function creates a figure with three subplots:
+            - A full spectrum plot with highlighted regions for Carbon and Silicone peaks.
+            - A zoomed-in view of the Silicone peak.
+            - A zoomed-in view of the Carbon peak.
+        - Red rectangles and labels are used to highlight the zoomed regions in the 
+          full spectrum plot.
+        - Dashed blue lines connect the highlighted regions in the full spectrum plot 
+          to their corresponding zoomed-in subplots.
+        - The y-axis of the full spectrum plot is logarithmic.
+        - The resulting figure is saved as a PNG file with the name derived from the 
+          `suptitle` parameter.
+    Example:
+        multi_spectrum(
+            df=dataframe,
+            columns=['col1', 'col2'],
+            bins=np.array([...]),
+            c_window=[1.0, 2.0],
+            si_window=[0.5, 1.0],
+            suptitle="Spectrum Analysis",
+            output_folder="/path/to/output/"
+            """
+    if columns is None:
+        columns = df.columns
+
+    
+    si_filter = (bins >= si_window[0]) & (bins <= si_window[1])
+    c_filter = (bins >= c_window[0]) & (bins <= c_window[1])
+    
+    si_bins = bins[si_filter]
+    c_bins = bins[c_filter]
+    
+    si_spec = df[columns][si_filter]
+    c_spec = df[columns][c_filter]
+
+    si_min, si_max = np.min(si_spec), np.max(si_spec)
+    c_min, c_max = np.min(c_spec), np.max(c_spec)
+
+    large_window_filter = (bins >= large_window[0]) & (bins <= large_window[1])
+    large_window_bins = bins[large_window_filter]
+    large_window_spec = df[columns][large_window_filter]
+    fig, axs = plt.subplot_mosaic(
+        """
+        BAA
+        CAA
+        """, figsize=(8.67, 5.96), dpi=300, frameon=False)
+    
+    fig.suptitle(suptitle, fontsize=16, fontweight='bold', y=.95)
+
+    if colors is None:
+        if len(columns) == 1:
+            colors = ['black']
+        else:
+            colors = plt.cm.viridis(np.linspace(0, 1, len(columns)))
+
+    axs['A'].set_title('MINS Readings')
+    for i, col in enumerate(columns):
+        axs['A'].plot(large_window_bins, 
+                      large_window_spec[col], label=col, color=colors[i])
+    # axs['A'].legend()
+    axs['A'].set_yscale('log')
+    axs['A'].set_xlabel('Energy (MeV)')
+    axs['A'].set_ylabel('Counts')
+    # draw squares around the zoomed regions
+    axs['A'].add_patch(plt.Rectangle((c_window[0], c_min), c_window[1]-c_window[0], (c_max-c_min)*1.5, fill=None, edgecolor='red'))
+    axs['A'].add_patch(plt.Rectangle((si_window[0], si_min), si_window[1]-si_window[0], si_max, fill=None, edgecolor='red'))
+    # label the zoomed regions
+    axs['A'].text((c_window[1]+c_window[0])/2, c_max*1.5, 'Carbon', horizontalalignment='center', verticalalignment='bottom', transform=axs['A'].transData, color='red')
+    axs['A'].text((si_window[1]+si_window[0])/2, si_max*1.5, 'Silicone', horizontalalignment='center', verticalalignment='bottom', transform=axs['A'].transData, color='red')
+
+    cbar = fig.colorbar(plt.cm.ScalarMappable(cmap='viridis'), ax=axs['A'], orientation='vertical')
+    cbar.set_ticks(np.linspace(0, 1, len(columns)))
+    cbar.set_ticklabels(columns)
+
+    for i, col in enumerate(columns):
+        axs['B'].plot(si_bins, si_spec[col], label=col, color=colors[i])
+        axs['C'].plot(c_bins, c_spec[col], label=col, color=colors[i])
+
+    axs['B'].set_xlim(si_window[0], si_window[1])
+    # axs['B'].set_ylim(si_min, si_max)
+    axs['B'].set_title('Silicone Peak')
+    axs['B'].set_xlabel('Energy (MeV)')
+    axs['B'].set_ylabel('Counts')
+
+    axs['C'].set_xlim(c_window[0], c_window[1])
+    # axs['C'].set_ylim(c_min, c_max)
+    axs['C'].set_title('Carbon Peak')
+    axs['C'].set_xlabel('Energy (MeV)')
+    axs['C'].set_ylabel('Counts')
+
+    start = axs['A'].transData.transform((c_window[0], c_min))
+    end = axs['C'].transData.transform((c_window[1], axs['C'].get_ylim()[0]))
+    # Transform figure coordinates to display space
+    inv = fig.transFigure.inverted()
+    start_fig = inv.transform(start)
+    end_fig = inv.transform(end)
+    # Add the line in figure space
+    line = Line2D(
+        [start_fig[0], end_fig[0]],  # x-coordinates in figure space
+        [start_fig[1], end_fig[1]],  # y-coordinates in figure space
+        transform=fig.transFigure,  # Use figure transformation
+        color='blue', linestyle='--', linewidth=1
+    )
+    fig.add_artist(line)
+
+    start = axs['A'].transData.transform((c_window[0], c_max*1.3))
+    end = axs['C'].transData.transform((c_window[1], axs['C'].get_ylim()[1]))
+    # Transform figure coordinates to display space
+    inv = fig.transFigure.inverted()
+    start_fig = inv.transform(start)
+    end_fig = inv.transform(end)
+    # Add the line in figure space
+    line = Line2D(
+        [start_fig[0], end_fig[0]],  # x-coordinates in figure space
+        [start_fig[1], end_fig[1]],  # y-coordinates in figure space
+        transform=fig.transFigure,  # Use figure transformation
+        color='blue', linestyle='--', linewidth=1
+    )
+    fig.add_artist(line)
+    # add a color bar
+    
+
+    # plt.tight_layout()
+    if filename is None:
+        filename = suptitle+'.'+filetype
+    else:
+        if '.' in filename:
+            pass
+        else:
+            filename = filename+'.'+filetype
+
+    plt.tight_layout()
+    plt.savefig(f"{output_folder+filename}")
+    plt.close(fig)
+
 def single_component_fit(df, testing_df, fitting_df, bins=None, window=None, column=None, suptitle=None, output_folder=None, filetype='jpg'):
     """
     Perform a single-component fit on the provided data and generate a plot of the results.
@@ -426,7 +580,7 @@ def single_component_fit(df, testing_df, fitting_df, bins=None, window=None, col
     spectrum_fit = [weight*testing_df[clm] for clm, weight in zip(tst_clms, fitting_df.loc[column])]
     spectrum_fit = np.sum(spectrum_fit, axis=0)
     fig, axs = plt.subplots(1, 1, figsize=(5.45, 5.59), dpi=300, frameon=False)
-    fig.suptitle(suptitle)
+    fig.suptitle(suptitle, fontsize=16, fontweight='bold', y=.98)
     true_spec = df[column]
     if window is not None:
         c_filter = (bins >= window[0]) & (bins <= window[1])
@@ -443,7 +597,7 @@ def single_component_fit(df, testing_df, fitting_df, bins=None, window=None, col
     axs.set_title('Fitting Results')
     axs.set_xlabel('Energy (MeV)')
     axs.set_ylabel('Intensity')
-    plt.grid()
+    # plt.grid()
     # plt.tight_layout()
 
     # plt.show()

@@ -19,11 +19,15 @@ def geb(x, a, b, c):
 def exp_falloff(x,x0,a,p,b):
     return (a*np.exp(-p*(x-x0)))+b
 
+def lorentzian(x, x0, a, b):
+    return 1 / (a*(x - x0) ** 2 + b ** 2 + 1)
+
 functions = {
     'linear': linearfunc,
     'gauss': gaussianfunc,
     'double_gauss': double_gaussian,
-    'exp_falloff': exp_falloff
+    'exp_falloff': exp_falloff,
+    'lorentzian': lorentzian,
 }
 
 gaus_fix_term = 0.60056120439322
@@ -38,6 +42,8 @@ def generate_initial_guess(df, bins, f, p0='auto'):
             p0 = [gaus_fix_term*(df.max().max()-df.min().min())/2, np.mean(bins), (bins[-1]-bins[0])/6, gaus_fix_term*(df.max().max()-df.min().min())/2, np.mean(bins), (bins[-1]-bins[0])/ 6]
         elif f == exp_falloff:
             p0 = [np.min(bins), gaus_fix_term*(df.max().max()-df.min().min()), 1, df.min().min()]
+        elif f == lorentzian:
+            p0 = [0, 0, 0]
     return p0
 
 def generate_bounds(df, bins, f, bounds='auto'):
@@ -50,6 +56,8 @@ def generate_bounds(df, bins, f, bounds='auto'):
             bounds = ([0, np.min(bins), (bins[-1]-bins[0])/100, 0, np.min(bins), (bins[-1]-bins[0])/100], [(df.max().max()-df.min().min()), np.max(bins), (bins[-1]-bins[0])/2, (df.max().max()-df.min().min()), np.max(bins), (bins[-1]-bins[0])/2])
         elif f == exp_falloff:
             bounds = ([-np.inf]*4, [np.inf]*4)
+        elif f == lorentzian:
+            bounds = ([0, 0, 0], [np.inf, np.inf, np.inf])
     return bounds
 
 def generic_area_under_peak(peak_func, x, *params):

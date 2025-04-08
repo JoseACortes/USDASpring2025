@@ -39,15 +39,15 @@ df = pd.DataFrame(spectrums.T, columns=headers)
 
 
 # In[2]: Plotting
-pt.general_plotter(
-    df, 
-    bins=bins, 
-    suptitle='Carbon and Silicon Concentrations', 
-    c_window=[4.2, 4.7], 
-    si_window=[1.6, 1.95], 
-    low_window=[0, 0.5], 
-    output_folder='output/'
-    )
+# pt.general_plotter(
+#     df, 
+#     bins=bins, 
+#     suptitle='Carbon and Silicon Concentrations', 
+#     c_window=[4.2, 4.7], 
+#     si_window=[1.6, 1.95], 
+#     low_window=[0, 0.5], 
+#     output_folder='output/'
+#     )
 
 true_c_concentrations = np.array(true_c_concentrations)
 
@@ -93,11 +93,11 @@ mae_test = np.mean(np.abs(testing_y - analyze(testing_x)))
 
 # %% Plotting Peak Fitting Results
 
-pt.plot_reg_results(
-    x_hat,
-    true_c_concentrations,
-    element='Carbon',
-    training_mask=train_mask,
-    suptitle='Component Fitting Results', 
-    output_folder='output/'
-    )
+# pt.plot_reg_results(
+#     x_hat,
+#     true_c_concentrations,
+#     element='Carbon',
+#     training_mask=train_mask,
+#     suptitle='Component Fitting Results', 
+#     output_folder='output/'
+#     )

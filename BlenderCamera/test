@@ -1,0 +1,98 @@
+import bpy
+import mathutils
+import math
+
+
+# Remove default objects
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete()
+
+def create_box(name, origin, dx, dy, dz):
+    bpy.ops.mesh.primitive_cube_add(size=1, location=origin)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.scale = (dx / 2, dy / 2, dz / 2)
+
+def create_sphere(name, center, radius):
+    bpy.ops.mesh.primitive_uv_sphere_add(radius=radius, location=center)
+    bpy.context.active_object.name = name
+
+def create_cylinder(name, base, height_vec, radius):
+    vec = mathutils.Vector(height_vec)
+    center = mathutils.Vector(base) + vec / 2
+    length = vec.length
+    direction = vec.normalized()
+    up = mathutils.Vector((0, 0, 1))
+    axis = up.cross(direction)
+    angle = up.angle(direction)
+
+    bpy.ops.mesh.primitive_cylinder_add(radius=radius, depth=length, location=center)
+    obj = bpy.context.active_object
+    obj.name = name
+    if axis.length > 0:
+        obj.rotation_mode = 'AXIS_ANGLE'
+        obj.rotation_axis_angle = (angle, *axis)
+
+# Geometry (abbreviated for brevity—you can paste the full version from before)
+create_sphere("sph_100000", (0, 0, 0), 3)
+# create_box("box_5000", (35 + 2.5, -30.05 + 30.05, -5 + 10), 1, 1, 1)
+# (Add the rest of the geometry as in previous message...)
+
+
+# Create brown soil material
+soil_mat = bpy.data.materials.new(name="SoilMaterial")
+soil_mat.use_nodes = True
+bsdf = soil_mat.node_tree.nodes.get("Principled BSDF")
+bsdf.inputs['Base Color'].default_value = (0.36, 0.25, 0.20, 1)  # A natural earthy brown
+bsdf.inputs['Roughness'].default_value = 0.9
+
+# Assign to sphere
+soil_obj = bpy.data.objects.get("sph_100000")
+if soil_obj:
+    if soil_obj.data.materials:
+        soil_obj.data.materials[0] = soil_mat
+    else:
+        soil_obj.data.materials.append(soil_mat)
+
+# Add camera
+cam_data = bpy.data.cameras.new(name='Camera')
+cam_obj = bpy.data.objects.new('Camera', cam_data)
+bpy.context.collection.objects.link(cam_obj)
+
+# Place camera
+cam_obj.location = (20, 20, 20)
+
+# Point it to the origin (or center of scene)
+target = mathutils.Vector((0, 0, 0))
+# target = mathutils.Vector((35 + 2.5, -30.05 + 30.05, -5 + 10))
+direction = target - cam_obj.location
+rot_quat = direction.to_track_quat('-Z', 'Y')
+cam_obj.rotation_euler = rot_quat.to_euler()
+
+bpy.context.scene.camera = cam_obj
+# # Add camera
+# cam_data = bpy.data.cameras.new(name='Camera')
+# cam_obj = bpy.data.objects.new('Camera', cam_data)
+# bpy.context.collection.objects.link(cam_obj)
+# bpy.context.scene.camera = cam_obj
+# cam_obj.location = (0, -2000, 800)
+# cam_obj.rotation_euler = (math.radians(60), 0, 0)
+
+# Add light
+light_data = bpy.data.lights.new(name="Light", type='SUN')
+light_obj = bpy.data.objects.new(name="Light", object_data=light_data)
+bpy.context.collection.objects.link(light_obj)
+light_obj.location = (0, -10, 10)
+
+# Set render settings
+scene = bpy.context.scene
+# scene.render.engine = 'CYCLES'
+scene.cycles.device = 'GPU'  # Change to 'GPU' if using GPU
+scene.render.image_settings.file_format = 'PNG'
+scene.render.filepath = "//render.png"
+scene.render.resolution_x = 1920
+scene.render.resolution_y = 1080
+
+
+# Render frame
+bpy.ops.render.render(write_still=True)

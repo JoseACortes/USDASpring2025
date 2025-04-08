@@ -66,8 +66,8 @@ fitting_df, carbon_fitting_df, si_fitting_df, c_lines_df, si_lines_df = pfa.Peak
     bins=bins,
     c_window=[4.2, 4.7], 
     si_window=[1.6, 1.95],
-    c_baseline='exp_falloff',
-    si_baseline='exp_falloff',
+    c_baseline='linear',
+    si_baseline='linear',
     )
 
 # train_index = [0, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
@@ -94,14 +94,15 @@ mae_test = np.mean(np.abs(testing_y - analyze(testing_x)))
 
 # %% Plotting Peak Fitting Results
 
-# pt.plot_reg_results(
-#     x_hat,
-#     true_c_concentrations,
-#     element='Carbon',
-#     training_mask=train_mask,
-#     suptitle='Peak Fitting Results', 
-#     output_folder='output/'
-#     )
+pt.plot_reg_results(
+    x_hat,
+    true_c_concentrations,
+    element='Carbon',
+    training_mask=train_mask,
+    suptitle='Carbon Fitting Prediction', 
+    output_folder='output/',
+    filetype='png'
+    )
 
 pt.plot_fitting_results(
     fitting_df,
@@ -125,7 +126,7 @@ pt.single_carbon_fit_plotter(
     c_lines_df[c_lines_df.columns[1:]], 
     column=8,
     bins=c_lines_df['bins'], 
-    suptitle='Carbon Fit Example', 
+    suptitle='Carbon Peak Fit Example', 
     c_window=[4.2, 4.7], 
     output_folder='output/',
     filetype='png'
