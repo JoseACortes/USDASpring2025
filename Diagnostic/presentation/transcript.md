@@ -14,7 +14,8 @@
 
 *Soil nutrient measurements aid farming and emission management. 
 Core harvesting is the common method to determine soil carbon content. Soil cores are taken to a lab for Dry Combustion, this gives precise measurements. Alternatively, the Mobile Inelastic Neutron Scattering System (MINS) Detects levels of carbon in a scanned region on site, avoiding the cost and time of lab analysis. 
-This device has been in development by the USDA. As a research intern in mathematics I have been tasked with simulating then analyzing the results from the MINS system*
+This device has been in development by the USDA. As a research intern in mathematics I have been tasked with simulating then analyzing the results from the MINS system
+In Figure 1 we see a soil core being harvested, in figure 2 the MINS system in scanning a point in the field*
 
 ## Inelastic Neutron Scatterings
 
@@ -26,11 +27,11 @@ This device has been in development by the USDA. As a research intern in mathema
 
 ## Simulating MINS - 1
 
-*The Monte Carlo Neutron Particle Simulator, MCNP6.2. this package is developed by the nuclear team in los alamos, and is still in use today. It is the software package used to model the interactions that occur when neutrons are shot into the soil. Here we define the geometry and chemical makeup of all the objects in the system*
+*I simulate the environment and system with the Monte Carlo Neutron Particle Simulator, MCNP6.2. this package is developed by the nuclear team in los alamos, and is still in use today. It is the software package used to model the interactions that occur when neutrons are shot into the soil. Here we define the geometry and chemical makeup of all the objects in the system*
 
 ## Simulating MINS - 2
 
-*The MINS system utilizes a neutron generator to emit fast neutrons which interact with carbon nuclei in the soil. All the events produce gamma radiation signatures that are captured by energy detectors.*
+*The MINS system utilizes a neutron generator to emit fast neutrons which interact with carbon nuclei in the soil. All the events produce gamma radiation signatures that are sometimes captured by energy detectors.*
 
 ## Defining Spectrums
 
@@ -41,7 +42,7 @@ Furthermore, If normalized such that the sum of all values equals one, the spect
 
 ## Spectrum Analysis
 
-*This is the spectrum resulting from simulating the MINS scanning a soil sample of an x% to y% carbon silicone mixture by weight, although the resulting spectrum comes from interactions with both elements, spikes of activity around characteristic energy levels are visible and prominent. We refer to these spikes as peaks, and they are the basis of analysis methods. The problem is formulated around taking these spectrums and deriving the elemental composition of the sample, we call this the deconvolution of spectra.*
+*This is the spectrum resulting from simulating the MINS scanning a soil sample of an 9% Carbon to 91% silicone mixture by weight, although the resulting spectrum comes from interactions with both elements, spikes of activity around characteristic energy levels are visible and prominent. We refer to these spikes as peaks, and they are the basis of analysis methods. The problem is formulated around taking these spectrums and deriving the elemental composition of the sample, we call this the deconvolution of spectra.*
 
 ## Data Generation
 
@@ -55,7 +56,7 @@ The classical way to do analysis is by measuring the size of the peak. This is d
 
 ## Classical Methods
 
-*The sum of the baseline and peak should equal the spectrum. The baseline filters out all the data not caused by INS, with the remaining data measured as part of the characteristic peak. The area of the peak is correlated with the amount of carbon in the sample.
+*The sum of the baseline and peak should equal the spectrum. Such that the baseline filters out all the data not caused by INS, with the remaining data measured as part of the characteristic peak. The area of the peak is correlated with the amount of carbon in the sample.
 The Perpendicular Drop (PD) method sets the minimum of the element window as the baseline. 
 This method is good for the prominent peaks found in lab analysis, but in the chaotic mobile setting on the field, baselines are not flat. 
 In the Tangent Skim method, the baseline is the tangent line to the minimum values on both sides of the peak.*
@@ -74,11 +75,11 @@ In the Tangent Skim method, the baseline is the tangent line to the minimum valu
 
 ## Prediction
 
-*The peak areas are correlated to the carbon content of the soil, and the outermost values are used as the training data for linear regression in a final prediction, which implies this method is accurate within a fraction of a percentage.*
+*The peak areas are correlated to the carbon content of the soil, and the outermost values are used as the training data for linear regression in a final prediction, with a Mean Squared Error below 10 to the negative fifth  which implies this method is accurate within a fraction of a percentage.*
 
 ## Limitations
 
-Peak and Baseline based methods are difficult to generalize to other elements, for every element you have to pick a new window, some elements have overlapping windows which mix characteristic signals. 
+*Peak and Baseline based methods are difficult to generalize to other elements, for every element you have to pick a new window, some elements have overlapping windows which mix characteristic signals.*
 
 # Paper Review
 
@@ -112,6 +113,9 @@ architecturally this differs from MINS in that the detector is set to only recor
 ## Ghost Element Limitation
 
 *Investigating the inclusion of a incorrect element shows a limitation: although al2o3 was not present in the sample, when used as training data, the method gives a false positive of 14 percent*
+
+## Limiting to Windows
+*This issue can be dampened by doing things such as filtering the data in the method to the windows*
 
 ## Results
 *I applied the the component curve fitting method to the same simulated data as the other analysis methods. Also, using the boundaries as the training data*

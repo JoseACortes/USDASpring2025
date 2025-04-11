@@ -9,21 +9,14 @@ import CortesAnalysisPackage.readfiles as rf
 root = tk.Tk()
 root.title("CortesAnalysis GUI - Peak Fitting")
 
-# dataframe variable
-
-
-global df
-df = pd.DataFrame()
-# folder variable
-output_foler = tk.StringVar('./output/test')
-# file variable
-run_file = tk.StringVar('./data/test/test_excel.xlsx')
-# bins variable
-bins_file = tk.StringVar()
-
-
+global df, folder, file, bins
+df = None
+folder = './'
+file = None
+bins = None
+# import data
 def select_file(): # read excel  or csv 
-    global df
+    global df, file
     file = filedialog.askopenfilename(filetypes=[("All files", "*.*"), ("Excel files", "*.xlsx"), ("CSV files", "*.csv")])
     if file:
         try:
